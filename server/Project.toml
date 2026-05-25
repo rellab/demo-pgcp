@@ -1,0 +1,14 @@
+[deps]
+# MiniCUDD is intentionally omitted: it is not in the General registry. It is
+# installed from a git URL in the cudd-julia base image into the default
+# (@v1.10) environment, which is on Julia's LOAD_PATH as a fallback, so
+# `using MiniCUDD` resolves even from this active project.
+GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+Oxygen = "df9a0d86-3283-4920-82dc-4555fc0d1d8b"
+ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
+
+[compat]
+julia = "1.10"

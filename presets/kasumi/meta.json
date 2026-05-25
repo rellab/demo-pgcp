@@ -1,0 +1,21 @@
+{
+  "bbox_latlon": {
+    "max_lat": 34.3824689,
+    "max_lon": 132.481734,
+    "min_lat": 34.3781182,
+    "min_lon": 132.4767362
+  },
+  "bbox_normalized": [
+    0.0,
+    0.0,
+    1.0,
+    1.0547859434043
+  ],
+  "default_pk": 0.9,
+  "display_name": "広島大学 霞キャンパス",
+  "id": "kasumi",
+  "maxlevel": 11,
+  "n_sensors": 67,
+  "side_meters": 459.1600564342616,
+  "subtitle": "Kasumi Campus, Hiroshima University"
+}

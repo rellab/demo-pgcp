@@ -1,0 +1,21 @@
+{
+  "bbox_latlon": {
+    "max_lat": 34.4040563,
+    "max_lon": 132.4621078,
+    "min_lat": 34.3990134,
+    "min_lon": 132.4569205
+  },
+  "bbox_normalized": [
+    0.0,
+    0.0,
+    1.0,
+    1.1782386502428905
+  ],
+  "default_pk": 0.9,
+  "display_name": "広島城",
+  "id": "castle",
+  "maxlevel": 12,
+  "n_sensors": 74,
+  "side_meters": 476.4489647188275,
+  "subtitle": "Hiroshima Castle"
+}

@@ -1,0 +1,10 @@
+services:
+  pgcp-webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pgcp-webapp
+    container_name: pgcp-webapp
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

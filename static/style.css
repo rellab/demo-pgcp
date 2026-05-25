@@ -1,0 +1,316 @@
+:root {
+  --bg: #f7f7f7;
+  --card: #ffffff;
+  --ink: #222;
+  --muted: #666;
+  --accent: #1f6feb;
+  --accent-soft: #d6e6ff;
+  --danger: #d93b3b;
+  --warning: #d99c00;
+  --border: #e2e2e2;
+  --active: #1f6feb;
+  --disabled: #999;
+  --essential: #d99c00;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI",
+               "Meiryo", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+header {
+  padding: 12px 20px;
+  background: linear-gradient(180deg, #fff, #f0f3f7);
+  border-bottom: 1px solid var(--border);
+}
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+header .subtitle {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 12px;
+  padding: 12px;
+  height: calc(100vh - 70px);
+}
+
+#map-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+#map {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #eef;
+}
+/* Tone down OSM tiles only, so the colored sensor disks / polygon stand out.
+   `.leaflet-tile-pane` holds raster tiles; vector overlays live in a sibling
+   pane and stay at full saturation. */
+.leaflet-tile-pane {
+  filter: brightness(0.95) saturate(0.55) contrast(0.9);
+}
+#map-legend {
+  padding: 8px 4px 0 4px;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-active    { background: var(--active); }
+.dot-disabled  { background: var(--disabled); }
+.dot-essential { background: var(--essential); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--essential); }
+
+.legend-spacer { flex: 1; }
+.legend-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.legend-toggle input { margin: 0; }
+/* Hide OSM tile imagery but keep the vector overlays (polygon + sensors + disks). */
+body.no-tiles .leaflet-tile-pane { visibility: hidden; }
+body.no-tiles #map { background: #f5f5f0; }
+
+#control-panel {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+#control-panel > .card,
+#control-panel > #evaluation-panel { flex-shrink: 0; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+.card strong { font-size: 14px; }
+.card .muted { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.card.small { font-size: 12px; }
+
+.muted { color: var(--muted); }
+
+.big-number {
+  text-align: center;
+  background: linear-gradient(180deg, #fff, #f3f8ff);
+  border-color: var(--accent-soft);
+}
+.big-number .label {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+.big-number .value {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.big-number .hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.value-tag {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+select, input[type="range"], button {
+  font-size: 14px;
+  font-family: inherit;
+}
+select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+input[type="range"] {
+  width: 100%;
+}
+.range-marks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: #f7f7f7;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:hover { background: #ececec; }
+button:active { transform: translateY(1px); }
+
+.row-between {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.quick-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+#failure-list {
+  font-size: 12px;
+  min-height: 18px;
+  margin-top: 4px;
+}
+
+#importance-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 6px;
+}
+.imp-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 60px;
+  align-items: center;
+  font-size: 12px;
+  gap: 6px;
+}
+.imp-name {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.imp-bar {
+  height: 10px;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.imp-bar-fill {
+  height: 100%;
+  background: var(--accent);
+}
+.imp-val {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+/* Custom sensor markers (rendered as Leaflet circleMarker via Leaflet styling). */
+.sensor-tooltip {
+  font-size: 12px;
+}
+
+#placement-card {
+  background: linear-gradient(180deg, #fff, #fff8e8);
+  border-color: #e9d18a;
+}
+
+/* When edits are pending replan, the R / pk / failure / importance panel
+   reflects the OLD BDD — fade it out and block interaction to make the
+   "再計算" button the obvious next step. */
+#evaluation-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: opacity 0.2s ease;
+}
+body.dirty #evaluation-panel {
+  opacity: 0.35;
+  pointer-events: none;
+  user-select: none;
+}
+body.dirty #placement-card {
+  box-shadow: 0 0 0 2px var(--danger);
+  border-color: var(--danger);
+}
+body.dirty #replan-button {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+  font-weight: bold;
+}
+#map { cursor: crosshair; }
+#replan-status { font-style: italic; }
+#replan-status.dirty { color: var(--danger); font-weight: bold; }
+#replan-status.running { color: var(--warning); }
+.mode-card .muted { margin: 0; }
+
+.default-radius-control {
+  margin: 8px 0;
+}
+.default-radius-control label {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.default-radius-control input[type="range"] {
+  width: 100%;
+}
+
+.sensor-popup-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.sensor-popup-actions button {
+  font-size: 12px;
+  padding: 3px 8px;
+}
+.sensor-popup-actions .danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.sensor-popup-actions .danger:hover { background: #fee; }
+
+.radius-slider {
+  width: 220px;
+  margin: 6px 0 2px 0;
+}

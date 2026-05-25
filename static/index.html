@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>確率的被覆信頼性デモ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+  <h1>確率的被覆信頼性デモ</h1>
+  <p class="subtitle">広島大学 岡村研究室 ― IEEE Transactions on Reliability 投稿論文より</p>
+</header>
+
+<main>
+  <section id="map-section">
+    <div id="map"></div>
+    <div id="map-legend">
+      <span class="legend-item"><span class="dot dot-active"></span>稼働中のセンサ</span>
+      <span class="legend-item"><span class="dot dot-disabled"></span>故障中のセンサ</span>
+      <span class="legend-item"><span class="dot dot-essential"></span>単独故障で被覆が崩れるセンサ</span>
+      <span class="legend-spacer"></span>
+      <label class="legend-toggle">
+        <input type="checkbox" id="tiles-toggle" checked> 背景地図
+      </label>
+    </div>
+  </section>
+
+  <aside id="control-panel">
+    <div class="card">
+      <label for="region-select"><strong>領域</strong></label>
+      <select id="region-select"></select>
+      <p id="region-info" class="muted"></p>
+    </div>
+
+    <div class="card mode-card">
+      <p class="muted small">
+        センサを<strong>クリック</strong>で故障/復旧、<strong>Shift+クリック</strong>で半径変更・削除、<strong>ドラッグ</strong>で移動。
+        地図の空白を<strong>クリック</strong>で新規追加。
+      </p>
+    </div>
+
+    <div class="card" id="placement-card">
+      <strong>配置の編集</strong>
+      <div class="default-radius-control">
+        <label for="new-radius-slider">
+          追加する半径:
+          <span class="value-tag"><span id="new-radius-meters">200</span> m</span>
+        </label>
+        <input type="range" id="new-radius-slider"
+               min="0.010" max="0.300" step="0.001" value="0.089">
+        <div class="range-marks">
+          <span>22 m</span><span>200 m</span><span>400 m</span><span>676 m</span>
+        </div>
+      </div>
+      <div class="row-between">
+        <span class="muted small">センサ数 <strong id="sensor-count">―</strong> 個</span>
+        <span class="muted small" id="replan-status"></span>
+      </div>
+      <div class="quick-buttons">
+        <button id="replan-button">再計算</button>
+        <button id="reset-button">最初の配置に戻す</button>
+        <button id="clear-all-button">全消去</button>
+      </div>
+    </div>
+
+    <div id="evaluation-panel">
+      <div class="card big-number">
+        <div class="label">被覆信頼性 R</div>
+        <div class="value" id="R-value">―</div>
+        <div class="hint" id="R-hint"></div>
+      </div>
+
+      <div class="card">
+        <label for="pk-slider"><strong>センサ単体の信頼性 p<sub>k</sub></strong>
+          <span class="value-tag" id="pk-value">0.900</span>
+        </label>
+        <input type="range" id="pk-slider" min="0.50" max="0.999" step="0.001" value="0.9">
+        <div class="range-marks">
+          <span>0.50</span><span>0.75</span><span>0.90</span><span>0.999</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row-between">
+          <strong>故障シナリオ</strong>
+          <button id="reset-failures">全部もとに戻す</button>
+        </div>
+        <div id="failure-list" class="muted">センサをクリックすると故障させられます。</div>
+        <div class="quick-buttons">
+          <button id="quick-cut">最小カットを試す</button>
+          <button id="quick-path">最小パスを試す</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <strong>Birnbaum 重要度（上位 10）</strong>
+        <div id="importance-bars"></div>
+      </div>
+    </div>
+
+    <div class="card muted small">
+      地図のタイルは OpenStreetMap です。
+    </div>
+  </aside>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

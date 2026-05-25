@@ -1,0 +1,21 @@
+{
+  "id": "higashi_hiroshima",
+  "display_name": "広島大学 東広島キャンパス",
+  "subtitle": "Higashi-Hiroshima Campus, Hiroshima University",
+  "side_meters": 2251.669001946042,
+  "bbox_normalized": [
+    0,
+    0,
+    1.0,
+    0.9446587706440723
+  ],
+  "bbox_latlon": {
+    "min_lat": 34.3920219,
+    "max_lat": 34.411151,
+    "min_lon": 132.7085049,
+    "max_lon": 132.733047
+  },
+  "n_sensors": 53,
+  "default_pk": 0.9,
+  "maxlevel": 11
+}
