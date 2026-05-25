@@ -211,6 +211,19 @@ button:active { transform: translateY(1px); }
   margin-top: 4px;
 }
 
+.sensor-status {
+  font-size: 13px;
+  padding: 6px 8px;
+  margin-top: 4px;
+  background: var(--accent-soft);
+  border-radius: 4px;
+  color: var(--ink);
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.sensor-status strong { color: var(--accent); }
+
 #importance-bars {
   display: flex;
   flex-direction: column;

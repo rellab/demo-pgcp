@@ -280,13 +280,26 @@ function renderImportanceFromMap() {
 }
 
 function renderFailureList() {
+  refreshSensorStatus();
   const div = document.getElementById("failure-list");
   if (state.disabled.size === 0) {
     div.textContent = "センサをクリックすると故障させられます。";
     return;
   }
   const names = Array.from(state.disabled).sort((a, b) => Number(a) - Number(b));
-  div.innerHTML = `故障中: <strong>${names.length}</strong> 個 ― ${names.map(n => `#${n}`).join(", ")}`;
+  div.innerHTML = `故障中のセンサ: ${names.map(n => `#${n}`).join(", ")}`;
+}
+
+function refreshSensorStatus() {
+  const total = state.current ? state.current.sensors.length : 0;
+  const disabled = state.disabled.size;
+  const active = Math.max(0, total - disabled);
+  const a = document.getElementById("active-count");
+  const d = document.getElementById("disabled-count");
+  const t = document.getElementById("total-count");
+  if (a) a.textContent = total === 0 ? "―" : active;
+  if (d) d.textContent = disabled;
+  if (t) t.textContent = total === 0 ? "―" : total;
 }
 
 // ---------------- Interactions ----------------
