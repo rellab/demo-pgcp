@@ -187,7 +187,19 @@ function addSensorToMap(c, region) {
       e.originalEvent.stopPropagation();
       e.originalEvent._stopped = true;
     }
-    onSensorClick(c.name, e);
+    if (state.replanInFlight) return;
+    toggleFailure(c.name);
+  });
+  // Right click opens the per-sensor popup (radius slider + delete).
+  // preventDefault suppresses the browser context menu.
+  marker.on("contextmenu", (e) => {
+    if (e.originalEvent) {
+      e.originalEvent.preventDefault();
+      e.originalEvent.stopPropagation();
+      e.originalEvent._stopped = true;
+    }
+    if (state.replanInFlight) return;
+    openSensorPopup(c.name, e);
   });
   attachDragHandlers(marker, c.name);
   marker.addTo(state.layers.sensors);
@@ -278,17 +290,6 @@ function renderFailureList() {
 }
 
 // ---------------- Interactions ----------------
-
-function onSensorClick(name, event) {
-  if (state.replanInFlight) return;
-  // Shift+click opens the per-sensor popup (radius slider, delete).
-  // A bare click just toggles failure — the primary demo action.
-  if (event?.originalEvent?.shiftKey) {
-    openSensorPopup(name, event);
-    return;
-  }
-  toggleFailure(name);
-}
 
 // Radius bounds for the per-sensor slider. The smallest is well below the
 // PDS minimum used in the paper (200 m), and the largest is roughly the
