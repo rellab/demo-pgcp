@@ -13,7 +13,7 @@
   ],
   "default_pk": 0.9,
   "display_name": "広島城",
-  "id": "castle",
+  "id": "03_castle",
   "maxlevel": 12,
   "n_sensors": 74,
   "side_meters": 476.4489647188275,
