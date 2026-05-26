@@ -430,6 +430,11 @@ function attachDragHandlers(marker, name) {
 
 function onMapClick(e) {
   if (state.replanInFlight) return;
+  // (0) Adding a sensor requires Ctrl (Win/Linux) or Cmd (Mac) to be held.
+  // A bare click is reserved for fail/recover on existing sensors and must
+  // not accidentally drop a new one when the user misses the marker.
+  const oe = e.originalEvent;
+  if (!oe || !(oe.ctrlKey || oe.metaKey)) return;
   // (1) If any popup is open, the user is interacting with it — never add.
   if (state.popupOpenCount > 0) return;
   // (2) If a popup was just closed (within the last 250 ms), this click is
@@ -578,6 +583,16 @@ function applyRegionPayload(region) {
   const meters = Math.round(state.newRadius * region.side_meters);
   const mEl = document.getElementById("new-radius-meters");
   if (mEl) mEl.textContent = meters;
+  // The tick marks under the slider are normalized values that must be
+  // re-rendered in this region's meters (e.g. 0.089 -> 200 m on a 2247 m side
+  // but ~46 m on the kasumi castle region).
+  const marksEl = document.getElementById("new-radius-marks");
+  if (marksEl) {
+    for (const span of marksEl.querySelectorAll("span[data-norm]")) {
+      const norm = parseFloat(span.dataset.norm);
+      span.textContent = `${Math.round(norm * region.side_meters)} m`;
+    }
+  }
   currentR = region.precomputed.R;
   currentEssential = new Set(region.precomputed.essential_sensors || []);
   document.getElementById("pk-slider").value = String(region.default_pk);
@@ -610,6 +625,19 @@ function initMap() {
     state.popupOpenCount = Math.max(0, state.popupOpenCount - 1);
     state.popupClosedAt = Date.now();
   });
+  // Show a "+" cursor while Ctrl/Cmd is held, as a visual cue that clicking
+  // the map will add a sensor at that point.
+  const mapEl = document.getElementById("map");
+  const setAddMode = (on) => mapEl.classList.toggle("add-mode", on);
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Control" || e.key === "Meta") setAddMode(true);
+  });
+  window.addEventListener("keyup", (e) => {
+    if (e.key === "Control" || e.key === "Meta") setAddMode(false);
+  });
+  // Clearing focus (e.g. Cmd-Tab to another app) can swallow the keyup; reset
+  // on blur so the cursor doesn't get stuck in add-mode.
+  window.addEventListener("blur", () => setAddMode(false));
 }
 
 // ---------------- Boot ----------------

@@ -291,7 +291,12 @@ body.dirty #replan-button {
   border-color: var(--danger);
   font-weight: bold;
 }
-#map { cursor: crosshair; }
+/* Default cursor is the Leaflet grab hand. While Ctrl/Cmd is held, the
+   map is in "add sensor" mode and the cursor switches to the OS copy
+   indicator (arrow with a small +), matching the Ctrl+click affordance. */
+#map.add-mode,
+#map.add-mode .leaflet-interactive,
+#map.add-mode .leaflet-grab { cursor: copy; }
 #replan-status { font-style: italic; }
 #replan-status.dirty { color: var(--danger); font-weight: bold; }
 #replan-status.running { color: var(--warning); }

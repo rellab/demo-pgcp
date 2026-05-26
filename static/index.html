@@ -38,7 +38,7 @@
     <div class="card mode-card">
       <p class="muted small">
         センサを<strong>クリック</strong>で故障/復旧、<strong>右クリック</strong>で半径変更・削除、<strong>ドラッグ</strong>で移動。
-        地図の空白を<strong>クリック</strong>で新規追加。
+        地図の空白を<strong>Ctrl+クリック</strong> (Macは<strong>⌘+クリック</strong>) で新規追加。
       </p>
     </div>
 
@@ -51,8 +51,8 @@
         </label>
         <input type="range" id="new-radius-slider"
                min="0.010" max="0.300" step="0.001" value="0.089">
-        <div class="range-marks">
-          <span>22 m</span><span>200 m</span><span>400 m</span><span>676 m</span>
+        <div class="range-marks" id="new-radius-marks">
+          <span data-norm="0.010">―</span><span data-norm="0.089">―</span><span data-norm="0.178">―</span><span data-norm="0.300">―</span>
         </div>
       </div>
       <div class="row-between">
